@@ -19,15 +19,20 @@ int main() {
     // les communications ne vont que dans un sens
     // on ne peut pas parler en mm temps dans le tuyau
 
+    char txt_pere[] = "Père\n";
+    char txt_fils[] = "Fils\n";
     pid_t pid = fork();
 
     if (pid==0) { // père
-
-        printf("Père\n");
-         
+        close(file_descriptor[0]);
+        write(file_descriptor[1], &txt_pere, sizeof(int));
+        close(file_descriptor[1]);
+        read(file_descriptor[0], &txt_pere, sizeof(int));
     } else {
-        printf("Fils\n");
+        close(file_descriptor[0]);
+        write(file_descriptor[1], &txt_fils, sizeof(int));
+        close(file_descriptor[1]);
+        read(file_descriptor[0], &txt_fils, sizeof(int));
     }
 
-    close(file_descriptor[0]);
 }

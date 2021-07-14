@@ -24,10 +24,12 @@ int main() {
 
     if (pid==0) { // père
         close(file_descriptor[0]);
-        write(file_descriptor[1], sent_integer, sizeof(int));
+        write(file_descriptor[1], &sent_integer, sizeof(int));
+        printf("%d\n",sent_integer);
     } else {
         int number;
         close(file_descriptor[1]);
-        read(file_descriptor[0], number, sizeof(int));
+        read(file_descriptor[0], &number, sizeof(int));
+        printf("%d\n",number);
     }
 }
