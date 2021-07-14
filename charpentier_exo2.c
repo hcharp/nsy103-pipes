@@ -11,8 +11,8 @@
 #include <stdlib.h>
 
 int main() {
-    int file_descriptor[2];
-    pipe(file_descriptor); // sur [0] pour la lecture et sur [1] pour l'écriture
+    int fds[2];
+    pipe(fds); // sur [0] pour la lecture et sur [1] pour l'écriture
     // il faut fermer le descripteur dont on n'a pas besoin avant de créer un fils
     // attention c'est unilatéral
     // pas vraiment un tube mais plutôt un tuyau (pipe)
@@ -24,15 +24,12 @@ int main() {
     pid_t pid = fork();
 
     if (pid==0) { // père
-        close(file_descriptor[0]);
-        write(file_descriptor[1], &txt_pere, sizeof(int));
-        close(file_descriptor[1]);
-        read(file_descriptor[0], &txt_pere, sizeof(int));
+        close(fds[0]);
+        write(fds[1], NULL, 1);
+        printf("%s\n", txt_pere);
     } else {
-        close(file_descriptor[0]);
-        write(file_descriptor[1], &txt_fils, sizeof(int));
-        close(file_descriptor[1]);
-        read(file_descriptor[0], &txt_fils, sizeof(int));
-    }
-
+        close(fds[1]);
+        read(fds[0], NULL, 1);
+        printf("%s\n", txt_fils);
+        }
 }

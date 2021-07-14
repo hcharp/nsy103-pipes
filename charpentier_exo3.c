@@ -12,18 +12,24 @@
 #include <string.h>
 
 int main() {
-    int file_descriptor[2];
-    pipe(file_descriptor);
+    int fds[2];
+    pipe(fds);
 
-    char phrase[] = "Bonjour monde";
+    char phrase[100];
 
     pid_t pid = fork();
 
     if (pid==0) { // père
-        write(file_descriptor[1], phrase, sizeof(int));
+        close(fds[0]);
+        char phrase_envoyee[] = "Bonjour le monde";
+        write(fds[1], phrase_envoyee, strlen(phrase_envoyee)); // je le mets dans le tube
     } else {
-        int nb_car = len(phrase);
-        close(file_descriptor[1]);
-        read(file_descriptor[0], nb_car, sizeof(int));
+        close(fds[1]); // je ferme la porte d'écriture
+        // read(fds[0], phrase, 100); // je le lis dans le tube
+        // int nb_car = strlen(phrase);
+
+        //comme read renvoie le nombre de caractères, on fera plutôt :
+        int nb_car = read(fds[0], phrase, 100); 
+        printf("La phrase \"%s\" contient %d caractères.\n", phrase, nb_car);
     }
 }

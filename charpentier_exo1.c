@@ -23,12 +23,12 @@ int main() {
     pid_t pid = fork();
 
     if (pid==0) { // père
-        close(file_descriptor[0]);
+        close(file_descriptor[0]);//on ferme la porte de lecture, ça ouvre celle d'écriture
         write(file_descriptor[1], &sent_integer, sizeof(int));
         printf("%d\n",sent_integer);
     } else {
         int number;
-        close(file_descriptor[1]);
+        close(file_descriptor[1]);//ferme écriture, ouvre lecture
         read(file_descriptor[0], &number, sizeof(int));
         printf("%d\n",number);
     }
