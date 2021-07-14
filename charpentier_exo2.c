@@ -22,6 +22,12 @@ int main() {
     pid_t pid = fork();
 
     if (pid==0) { // père
-        close(file_descriptor[0]); 
-    } 
+
+        printf("Père\n");
+         
+    } else {
+        printf("Fils\n");
+    }
+
+    close(file_descriptor[0]);
 }

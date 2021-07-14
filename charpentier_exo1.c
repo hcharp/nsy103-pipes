@@ -28,6 +28,6 @@ int main() {
     } else {
         int number;
         close(file_descriptor[1]);
-        read(file_descriptor[0], number);
+        read(file_descriptor[0], number, sizeof(int));
     }
 }
